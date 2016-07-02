@@ -7,7 +7,10 @@ set -o pipefail
 # Compute repo's dir
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-IMAGE_PREFIX="karalabe/xgo"
+# Prefix listed in dockerfiles
+ORIGINAL_PREFIX="karalabe/xgo"
+# Image prefix to use
+IMAGE_PREFIX="aarono/xgo"
 
 function build_image() {
     local folder=$1
@@ -22,7 +25,7 @@ function build_image_file() {
     local name=$2
     local version=$3
 
-    local fixed_dockerfile=$(cat ${dockerfile} | sed -E "s/FROM (.*)$/FROM \\1:${version}/")
+    local fixed_dockerfile=$(cat ${dockerfile} | sed 's|'${ORIGINAL_PREFIX}'|'${IMAGE_PREFIX}'|' | sed -E "s/FROM (.*)$/FROM \\1:${version}/")
 
     echo "${fixed_dockerfile}" | docker build -t "${name}:${version}" -
 }
