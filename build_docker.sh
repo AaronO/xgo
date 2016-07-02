@@ -41,7 +41,7 @@ function subdirs() {
 }
 
 function go_versions() {
-    subdirs "${DIR}/docker" | grep -v base | grep -v latest | sed 's/^go-//'
+    subdirs "${DIR}/docker" | grep -v base | grep -v latest | grep "1.6" | sed 's/^go-//'
 }
 
 function main() {
